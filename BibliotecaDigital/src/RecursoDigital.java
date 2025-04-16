@@ -1,5 +1,5 @@
 public interface RecursoDigital {
-    String getIdentificador();
+    int getId();
     EstadoRecurso getEstado();
     void actualizarEstado(EstadoRecurso estado);
 }
