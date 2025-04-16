@@ -1,5 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
 
 public class GestorUsuarios {
     private Map<Integer, Usuario> usuarios = new HashMap<>();
