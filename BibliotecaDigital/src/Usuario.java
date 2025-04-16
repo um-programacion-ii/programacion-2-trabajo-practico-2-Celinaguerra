@@ -4,9 +4,10 @@ public class Usuario {
     private String apellido;
     private String email;
 
-    public Usuario(int id, String nombre, String email) {
+    public Usuario(int id, String nombre, String apellido, String email) {
         this.id = id;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.email = email;
     }
 

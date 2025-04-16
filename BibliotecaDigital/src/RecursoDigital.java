@@ -2,12 +2,12 @@ public abstract class RecursoDigital {
     private int id;
     private String titulo;
 
-    public RecursoDigital(String id, String titulo) {
+    public RecursoDigital(int id, String titulo) {
         this.id = id;
         this.titulo = titulo;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
