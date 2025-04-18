@@ -1,6 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        Consola consola = new Consola();
+        ServicioNotificaciones notificador = new ServicioNotificacionesEmail(); //
+        Consola consola = new Consola(notificador);
         consola.iniciar();
     }
 }
