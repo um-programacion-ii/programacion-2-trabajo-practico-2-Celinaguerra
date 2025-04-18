@@ -5,7 +5,7 @@ public class Consola {
     private GestorUsuarios gestorUsuarios = new GestorUsuarios();
     private GestorRecursos gestorRecursos = new GestorRecursos();
 
-
+    // MENU
     public void iniciar() {
         int opcion = -1;
 
@@ -15,6 +15,7 @@ public class Consola {
             System.out.println("2. Listar usuarios");
             System.out.println("3. Agregar recurso");
             System.out.println("4. Listar recursos");
+            System.out.println("5. Prestar/Devolver/Renovar recurso");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -25,6 +26,7 @@ public class Consola {
                 case 2 -> listarUsuarios();
                 case 3 -> agregarRecurso();
                 case 4 -> listarRecursos();
+                case 5 -> operarConRecurso();
 
                 case 0 -> System.out.println("Saliendo");
                 default -> System.out.println("Opción inválida.");
@@ -103,4 +105,49 @@ public class Consola {
         System.out.println("--- Lista de Recursos ---");
         gestorRecursos.listarRecursos();
     }
+
+    // Submenú de recursos
+    private void operarConRecurso() {
+        System.out.print("Ingrese ID del recurso: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        RecursoDigital recurso = gestorRecursos.obtenerRecurso(id);
+
+        if (recurso == null) {
+            System.out.println("No se encontró el recurso.");
+            return;
+        }
+
+        recurso.mostrarInformacion();
+        System.out.println("\nOperaciones disponibles:");
+
+        if (recurso instanceof Prestable) {
+            System.out.println("1. Prestar");
+            System.out.println("2. Devolver");
+        }
+
+        if (recurso instanceof Renovable) {
+            System.out.println("3. Renovar");
+        }
+
+        System.out.println("0. Volver");
+        System.out.print("Seleccione una opción: ");
+        int opcion = Integer.parseInt(scanner.nextLine());
+
+        if (recurso instanceof Prestable prestable) {
+            switch (opcion) {
+                case 1 -> prestable.prestar();
+                case 2 -> prestable.devolver();
+            }
+        }
+
+        if (recurso instanceof Renovable renovable) {
+            if (opcion == 3) {
+                renovable.renovar();
+            }
+        }
+
+        System.out.println("Operación completada.");
+    }
+
 }
