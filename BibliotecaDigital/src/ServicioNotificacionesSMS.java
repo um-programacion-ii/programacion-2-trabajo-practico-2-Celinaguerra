@@ -1,6 +1,7 @@
+// ServicioNotificacionesSMS.java
 public class ServicioNotificacionesSMS implements ServicioNotificaciones {
     @Override
-    public void notificar(String mensaje) {
-        System.out.println("[SMS] " + mensaje);
+    public void enviarNotificacion(String destino, String mensaje) {
+        System.out.println("[SMS a " + destino + "] " + mensaje);
     }
 }

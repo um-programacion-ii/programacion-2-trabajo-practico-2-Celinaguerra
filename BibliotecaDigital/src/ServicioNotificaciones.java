@@ -1,3 +1,4 @@
+// ServicioNotificaciones.java
 public interface ServicioNotificaciones {
-    void notificar(String mensaje);
+    void enviarNotificacion(String destino, String mensaje);
 }

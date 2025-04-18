@@ -2,8 +2,12 @@ import java.util.Scanner;
 
 public class Consola {
     private Scanner scanner = new Scanner(System.in);
-    private GestorUsuarios gestorUsuarios = new GestorUsuarios();
+    private GestorUsuarios gestorUsuarios; //modif
     private GestorRecursos gestorRecursos = new GestorRecursos();
+
+    public Consola(ServicioNotificaciones notificador) { //
+        this.gestorUsuarios = new GestorUsuarios(notificador);
+    }
 
     // MENU
     public void iniciar() {
