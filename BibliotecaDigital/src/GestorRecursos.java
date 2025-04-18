@@ -13,4 +13,9 @@ public class GestorRecursos {
             recurso.mostrarInformacion();
         }
     }
+
+    public RecursoDigital obtenerRecurso(int id) {
+        return recursos.get(id);
+    }
+
 }

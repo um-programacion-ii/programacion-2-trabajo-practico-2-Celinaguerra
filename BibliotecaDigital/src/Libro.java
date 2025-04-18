@@ -1,4 +1,4 @@
-public class Libro implements RecursoDigital {
+public class Libro implements RecursoDigital, Prestable, Renovable {
     private int id;
     private String titulo;
     private String autor;
@@ -40,5 +40,41 @@ public class Libro implements RecursoDigital {
         System.out.println("Título: " + titulo);
         System.out.println("Autor: " + autor);
         System.out.println("Estado: " + estado);
+    }
+
+    //Prestable
+    @Override
+    public void prestar() {
+        if (estado == EstadoRecurso.DISPONIBLE) {
+            estado = EstadoRecurso.PRESTADO;
+            System.out.println("Libro prestado.");
+        } else {
+            System.out.println("El libro no está disponible.");
+        }
+    }
+
+    @Override
+    public void devolver() {
+        if (estado == EstadoRecurso.PRESTADO) {
+            estado = EstadoRecurso.DISPONIBLE;
+            System.out.println("Libro devuelto.");
+        } else {
+            System.out.println("No tiene libro para devolver.");
+        }
+    }
+
+    @Override
+    public boolean estaPrestado() {
+        return estado == EstadoRecurso.PRESTADO;
+    }
+
+    //Renovable
+    @Override
+    public void renovar() {
+        if (estado == EstadoRecurso.PRESTADO) {
+            System.out.println("Libro renovado.");
+        } else {
+            System.out.println("No se puede renovar un libro que no está prestado.");
+        }
     }
 }

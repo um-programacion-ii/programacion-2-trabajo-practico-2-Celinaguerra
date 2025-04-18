@@ -48,4 +48,6 @@ public class Audiolibro implements RecursoDigital {
         System.out.println("Duración: " + duracionEnMinutos + " minutos");
         System.out.println("Estado: " + estado);
     }
+
+    //No lo considero prestable ni renovable
 }

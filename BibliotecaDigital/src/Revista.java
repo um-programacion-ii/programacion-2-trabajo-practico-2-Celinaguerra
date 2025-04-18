@@ -1,4 +1,4 @@
-public class Revista implements RecursoDigital {
+public class Revista implements RecursoDigital, Prestable {
     private int id;
     private String titulo;
     private int numeroEdicion;
@@ -41,4 +41,31 @@ public class Revista implements RecursoDigital {
         System.out.println("Edición N°: " + numeroEdicion);
         System.out.println("Estado: " + estado);
     }
+
+    //PRESTABLE
+    @Override
+    public void prestar() {
+        if (estado == EstadoRecurso.DISPONIBLE) {
+            estado = EstadoRecurso.PRESTADO;
+            System.out.println("Revista prestada.");
+        } else {
+            System.out.println("La revista no está disponible.");
+        }
+    }
+
+    @Override
+    public boolean estaPrestado() {
+        return estado == EstadoRecurso.PRESTADO;
+    }
+
+    @Override
+    public void devolver() {
+        if (estado == EstadoRecurso.PRESTADO) {
+            estado = EstadoRecurso.DISPONIBLE;
+            System.out.println("Revista devuelta.");
+        } else {
+            System.out.println("La revista no estaba prestada.");
+        }
+    }
+
 }
