@@ -23,7 +23,8 @@ public class Consola {
             System.out.println("4. Agregar recurso");
             System.out.println("5. Listar recursos");
             System.out.println("6. Buscar recurso por título");
-            System.out.println("7. Prestar/Devolver/Renovar recurso");
+            System.out.println("7. Buscar recurso por categoría");
+            System.out.println("8. Prestar/Devolver/Renovar recurso");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -36,7 +37,8 @@ public class Consola {
                 case 4 -> agregarRecurso();
                 case 5 -> listarRecursos();
                 case 6 -> buscarRecursoPorTitulo();
-                case 7 -> operarConRecurso();
+                case 7 -> buscarPorCategoria();
+                case 8 -> operarConRecurso();
 
 
                 case 0 -> System.out.println("Saliendo");
@@ -144,6 +146,21 @@ public class Consola {
             System.out.println(usuario);
         }
     }
+
+    private void buscarPorCategoria() {
+        System.out.print("Ingrese la categoría (Libro, Revista, Audiolibro): ");
+        String categoria = scanner.nextLine();
+
+        List<RecursoDigital> filtrados = gestorRecursos.filtrarPorCategoria(categoria);
+
+        if (filtrados.isEmpty()) {
+            System.out.println("No se encontraron recursos en esa categoría.");
+        } else {
+            System.out.println("--- Recursos encontrados ---");
+            filtrados.forEach(RecursoDigital::mostrarInformacion);
+        }
+    }
+
 
 
     // Submenú de recursos

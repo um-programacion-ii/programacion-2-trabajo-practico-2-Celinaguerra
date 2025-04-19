@@ -40,6 +40,11 @@ public class Audiolibro implements RecursoDigital {
         return duracionEnMinutos;
     }
 
+    @Override
+    public String getCategoria() {
+        return "Audiolibro";
+    }
+
     public void mostrarInformacion() {
         System.out.println("Audiolibro:");
         System.out.println("ID: " + id);

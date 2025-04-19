@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GestorRecursos {
     private List<RecursoDigital> recursos = new ArrayList<>();
@@ -37,6 +38,15 @@ public class GestorRecursos {
     public List<RecursoDigital> buscarPorTitulo(String titulo) {
         return recursos.stream()
                 .filter(r -> r.getTitulo().equalsIgnoreCase(titulo))
-                .toList();
+                .collect(Collectors.toList());
     }
+
+    //FILTRADO
+
+    public List<RecursoDigital> filtrarPorCategoria(String categoria) {
+        return recursos.stream()
+                .filter(r -> r.getCategoria().equalsIgnoreCase(categoria))
+                .collect(Collectors.toList());
+    }
+
 }
