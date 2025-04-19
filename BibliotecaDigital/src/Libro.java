@@ -34,6 +34,11 @@ public class Libro implements RecursoDigital, Prestable, Renovable {
         return autor;
     }
 
+    @Override
+    public String getCategoria() {
+        return "Libro";
+    }
+
     public void mostrarInformacion() {
         System.out.println("Libro:");
         System.out.println("ID: " + id);

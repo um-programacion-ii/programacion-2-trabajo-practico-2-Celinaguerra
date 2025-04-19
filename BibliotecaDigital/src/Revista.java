@@ -34,6 +34,11 @@ public class Revista implements RecursoDigital, Prestable {
         return numeroEdicion;
     }
 
+    @Override
+    public String getCategoria() {
+        return "Revista";
+    }
+
     public void mostrarInformacion() {
         System.out.println("Revista:");
         System.out.println("ID: " + id);
