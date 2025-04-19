@@ -11,13 +11,14 @@ public class GestorUsuarios {
 
     public void agregarUsuario(Usuario usuario) {
         usuarios.put(usuario.getEmail(), usuario);
-        notificador.enviarNotificacion("Bienvenido, " + usuario.getNombre() + "!");
+        notificador.enviarNotificacion("Bienvenido, " + usuario.getNombre() + "!", usuario.getEmail());
     }
 
     public void listarUsuarios() {
         usuarios.values().forEach(System.out::println);
     }
 
+    //BUSQUEDA USUARIOS
     public Usuario buscarUsuarioPorEmail(String email) {
         return usuarios.get(email);
     }
