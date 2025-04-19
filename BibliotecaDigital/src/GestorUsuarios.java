@@ -11,7 +11,7 @@ public class GestorUsuarios {
 
     public void agregarUsuario(Usuario usuario) {
         usuarios.put(usuario.getEmail(), usuario);
-        notificador.enviarNotificacion("Bienvenido, " + usuario.getNombre() + "!", usuario.getEmail());
+        notificador.enviarNotificacion(usuario.getEmail(), "Bienvenido, " + usuario.getNombre() + "!");
     }
 
     public void listarUsuarios() {

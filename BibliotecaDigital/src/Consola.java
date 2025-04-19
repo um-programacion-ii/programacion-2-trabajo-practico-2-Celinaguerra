@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.List;
+
 
 public class Consola {
     private Scanner scanner = new Scanner(System.in);
@@ -17,9 +19,11 @@ public class Consola {
             System.out.println("\nMENÚ");
             System.out.println("1. Agregar usuario");
             System.out.println("2. Listar usuarios");
-            System.out.println("3. Agregar recurso");
-            System.out.println("4. Listar recursos");
-            System.out.println("5. Prestar/Devolver/Renovar recurso");
+            System.out.println("3. Buscar usuario por email");
+            System.out.println("4. Agregar recurso");
+            System.out.println("5. Listar recursos");
+            System.out.println("6. Buscar recurso por título");
+            System.out.println("7. Prestar/Devolver/Renovar recurso");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -28,9 +32,12 @@ public class Consola {
             switch (opcion) {
                 case 1 -> agregarUsuario();
                 case 2 -> listarUsuarios();
-                case 3 -> agregarRecurso();
-                case 4 -> listarRecursos();
-                case 5 -> operarConRecurso();
+                case 3 -> buscarUsuarioPorEmail();
+                case 4 -> agregarRecurso();
+                case 5 -> listarRecursos();
+                case 6 -> buscarRecursoPorTitulo();
+                case 7 -> operarConRecurso();
+
 
                 case 0 -> System.out.println("Saliendo");
                 default -> System.out.println("Opción inválida.");
@@ -109,6 +116,35 @@ public class Consola {
         System.out.println("--- Lista de Recursos ---");
         gestorRecursos.listarRecursos();
     }
+
+    private void buscarRecursoPorTitulo() {
+        System.out.print("Ingrese el título del recurso: ");
+        String titulo = scanner.nextLine();
+
+        List<RecursoDigital> encontrados = gestorRecursos.buscarPorTitulo(titulo);
+
+        if (encontrados.isEmpty()) {
+            System.out.println("No se encontraron recursos con ese título.");
+        } else {
+            System.out.println("--- Recursos encontrados ---");
+            encontrados.forEach(RecursoDigital::mostrarInformacion);
+        }
+    }
+
+    private void buscarUsuarioPorEmail() {
+        System.out.print("Ingrese el email del usuario: ");
+        String email = scanner.nextLine();
+
+        Usuario usuario = gestorUsuarios.buscarUsuarioPorEmail(email);
+
+        if (usuario == null) {
+            System.out.println("No se encontró un usuario con ese email.");
+        } else {
+            System.out.println("--- Usuario encontrado ---");
+            System.out.println(usuario);
+        }
+    }
+
 
     // Submenú de recursos
     private void operarConRecurso() {
