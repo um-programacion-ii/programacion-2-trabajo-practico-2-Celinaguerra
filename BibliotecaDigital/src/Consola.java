@@ -1,5 +1,8 @@
 import java.util.Scanner;
 import java.util.List;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 
 
 public class Consola {
@@ -116,8 +119,11 @@ public class Consola {
 
     private void listarRecursos() {
         System.out.println("--- Lista de Recursos ---");
-        gestorRecursos.listarRecursos();
+        List<RecursoDigital> recursos = gestorRecursos.obtenerTodos();
+        recursos = ordenarRecursos(recursos);
+        recursos.forEach(RecursoDigital::mostrarInformacion);
     }
+
 
     private void buscarRecursoPorTitulo() {
         System.out.print("Ingrese el título del recurso: ");
@@ -128,10 +134,12 @@ public class Consola {
         if (encontrados.isEmpty()) {
             System.out.println("No se encontraron recursos con ese título.");
         } else {
+            encontrados = ordenarRecursos(encontrados);
             System.out.println("--- Recursos encontrados ---");
             encontrados.forEach(RecursoDigital::mostrarInformacion);
         }
     }
+
 
     private void buscarUsuarioPorEmail() {
         System.out.print("Ingrese el email del usuario: ");
@@ -156,10 +164,36 @@ public class Consola {
         if (filtrados.isEmpty()) {
             System.out.println("No se encontraron recursos en esa categoría.");
         } else {
+            filtrados = ordenarRecursos(filtrados);
             System.out.println("--- Recursos encontrados ---");
             filtrados.forEach(RecursoDigital::mostrarInformacion);
         }
     }
+
+
+    private List<RecursoDigital> ordenarRecursos(List<RecursoDigital> recursos) {
+        System.out.println("\n¿Desea ordenar los recursos?");
+        System.out.println("1. Por título");
+        System.out.println("2. Por ID");
+        System.out.println("3. Por categoría");
+        System.out.println("0. No ordenar");
+        System.out.print("Seleccione una opción: ");
+        int opcionOrden = Integer.parseInt(scanner.nextLine());
+
+        return switch (opcionOrden) {
+            case 1 -> recursos.stream()
+                    .sorted(GestorRecursos.POR_TITULO)
+                    .collect(Collectors.toList());
+            case 2 -> recursos.stream()
+                    .sorted(GestorRecursos.POR_ID)
+                    .collect(Collectors.toList());
+            case 3 -> recursos.stream()
+                    .sorted(GestorRecursos.POR_CATEGORIA)
+                    .collect(Collectors.toList());
+            default -> recursos;
+        };
+    }
+
 
 
 
