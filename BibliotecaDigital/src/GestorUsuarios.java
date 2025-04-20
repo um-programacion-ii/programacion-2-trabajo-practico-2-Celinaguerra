@@ -19,8 +19,13 @@ public class GestorUsuarios {
     }
 
     //BUSQUEDA USUARIOS
-    public Usuario buscarUsuarioPorEmail(String email) {
-        return usuarios.get(email);
+    public Usuario buscarUsuarioPorEmail(String email) throws UsuarioNoEncontradoException {
+        Usuario usuario = usuarios.get(email);
+        if (usuario == null) {
+            throw new UsuarioNoEncontradoException("No se encontró un usuario con el email: " + email);
+        }
+        return usuario;
     }
+
 
 }
