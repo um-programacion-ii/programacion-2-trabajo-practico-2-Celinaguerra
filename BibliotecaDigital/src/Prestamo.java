@@ -26,7 +26,7 @@ public class Prestamo {
     }
 
     public LocalDate getFechaDevolucion() {
-        return fechaDevolucionEstimada;
+        return fechaDevolucion;
     }
 
     @Override

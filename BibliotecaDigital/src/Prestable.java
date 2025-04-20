@@ -1,5 +1,5 @@
 public interface Prestable {
-    void prestar();
+    void prestar() throws RecursoNoDisponibleException;
     void devolver();
     boolean estaPrestado();
 }
