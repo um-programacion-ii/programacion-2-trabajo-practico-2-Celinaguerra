@@ -50,9 +50,13 @@ public class GestorRecursos {
     //FILTRADO
 
     public List<RecursoDigital> filtrarPorCategoria(String categoria) {
+        CategoriaRecurso categoriaEnum = CategoriaRecurso.valueOf(categoria.toUpperCase());
         return recursos.stream()
-                .filter(r -> r.getCategoria().equalsIgnoreCase(categoria))
+                .filter(r -> r.getCategoria() == categoriaEnum)
                 .collect(Collectors.toList());
+        //return recursos.stream()
+                //.filter(r -> r.getCategoria().equalsIgnoreCase(categoria))
+                //.collect(Collectors.toList());
     }
 
     public List<RecursoDigital> obtenerOrdenados(Comparator<RecursoDigital> comparador) {

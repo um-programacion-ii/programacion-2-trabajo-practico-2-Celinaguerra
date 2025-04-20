@@ -3,12 +3,14 @@ public class Revista implements RecursoDigital, Prestable {
     private String titulo;
     private int numeroEdicion;
     private EstadoRecurso estado;
+    private CategoriaRecurso categoria;
 
     public Revista(int id, String titulo, int numeroEdicion) {
         this.id = id;
         this.titulo = titulo;
         this.numeroEdicion = numeroEdicion;
         this.estado = EstadoRecurso.DISPONIBLE;
+        this.categoria = CategoriaRecurso.REVISTA;
     }
 
     @Override
@@ -35,8 +37,8 @@ public class Revista implements RecursoDigital, Prestable {
     }
 
     @Override
-    public String getCategoria() {
-        return "Revista";
+    public CategoriaRecurso getCategoria() {
+        return categoria;
     }
 
     public void mostrarInformacion() {

@@ -4,6 +4,7 @@ public class Audiolibro implements RecursoDigital {
     private String narrador;
     private int duracionEnMinutos;
     private EstadoRecurso estado;
+    private CategoriaRecurso categoria;
 
     public Audiolibro(int id, String titulo, String narrador, int duracionEnMinutos) {
         this.id = id;
@@ -11,6 +12,7 @@ public class Audiolibro implements RecursoDigital {
         this.narrador = narrador;
         this.duracionEnMinutos = duracionEnMinutos;
         this.estado = EstadoRecurso.DISPONIBLE;
+        this.categoria = CategoriaRecurso.AUDIOLIBRO;
     }
 
     @Override
@@ -28,6 +30,11 @@ public class Audiolibro implements RecursoDigital {
         this.estado = estado;
     }
 
+    @Override
+    public CategoriaRecurso getCategoria() {
+        return categoria;
+    }
+
     public String getTitulo() {
         return titulo;
     }
@@ -40,10 +47,6 @@ public class Audiolibro implements RecursoDigital {
         return duracionEnMinutos;
     }
 
-    @Override
-    public String getCategoria() {
-        return "Audiolibro";
-    }
 
     public void mostrarInformacion() {
         System.out.println("Audiolibro:");
