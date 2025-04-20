@@ -3,12 +3,14 @@ public class Libro implements RecursoDigital, Prestable, Renovable {
     private String titulo;
     private String autor;
     private EstadoRecurso estado; //para que funcione con RecursoDigital
+    private CategoriaRecurso categoria;
 
     public Libro(int id, String titulo, String autor) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.estado = EstadoRecurso.DISPONIBLE;
+        this.categoria = CategoriaRecurso.LIBRO;
     }
 
     @Override
@@ -35,8 +37,8 @@ public class Libro implements RecursoDigital, Prestable, Renovable {
     }
 
     @Override
-    public String getCategoria() {
-        return "Libro";
+    public CategoriaRecurso getCategoria() {
+        return categoria;
     }
 
     public void mostrarInformacion() {
