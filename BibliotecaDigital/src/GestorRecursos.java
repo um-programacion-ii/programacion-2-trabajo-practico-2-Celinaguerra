@@ -21,14 +21,15 @@ public class GestorRecursos {
         }
     }
 
-    public RecursoDigital obtenerRecurso(int id) {
+    public RecursoDigital obtenerRecurso(int id) throws RecursoNoDisponibleException {
         for (RecursoDigital recurso : recursos) {
             if (recurso.getId() == id) {
                 return recurso;
             }
         }
-        return null;
+        throw new RecursoNoDisponibleException("Recurso con ID " + id + " no encontrado.");
     }
+
 
     //BUSQUEDA DE RECURSOS
 
@@ -54,9 +55,6 @@ public class GestorRecursos {
         return recursos.stream()
                 .filter(r -> r.getCategoria() == categoriaEnum)
                 .collect(Collectors.toList());
-        //return recursos.stream()
-                //.filter(r -> r.getCategoria().equalsIgnoreCase(categoria))
-                //.collect(Collectors.toList());
     }
 
     public List<RecursoDigital> obtenerOrdenados(Comparator<RecursoDigital> comparador) {
@@ -68,6 +66,8 @@ public class GestorRecursos {
     public List<RecursoDigital> obtenerTodos() {
         return new ArrayList<>(recursos);
     }
+
+
 
 
 }

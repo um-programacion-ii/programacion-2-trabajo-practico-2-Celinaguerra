@@ -145,13 +145,12 @@ public class Consola {
         System.out.print("Ingrese el email del usuario: ");
         String email = scanner.nextLine();
 
-        Usuario usuario = gestorUsuarios.buscarUsuarioPorEmail(email);
-
-        if (usuario == null) {
-            System.out.println("No se encontró un usuario con ese email.");
-        } else {
+        try {
+            Usuario usuario = gestorUsuarios.buscarUsuarioPorEmail(email);
             System.out.println("--- Usuario encontrado ---");
             System.out.println(usuario);
+        } catch (UsuarioNoEncontradoException e) {
+            System.out.println("[ERROR] " + e.getMessage());
         }
     }
 
@@ -202,43 +201,40 @@ public class Consola {
         System.out.print("Ingrese ID del recurso: ");
         int id = Integer.parseInt(scanner.nextLine());
 
-        RecursoDigital recurso = gestorRecursos.obtenerRecurso(id);
+        try {
+            RecursoDigital recurso = gestorRecursos.obtenerRecurso(id);
+            recurso.mostrarInformacion();
 
-        if (recurso == null) {
-            System.out.println("No se encontró el recurso.");
-            return;
-        }
+            System.out.println("\nOperaciones disponibles:");
 
-        recurso.mostrarInformacion();
-        System.out.println("\nOperaciones disponibles:");
-
-        if (recurso instanceof Prestable) {
-            System.out.println("1. Prestar");
-            System.out.println("2. Devolver");
-        }
-
-        if (recurso instanceof Renovable) {
-            System.out.println("3. Renovar");
-        }
-
-        System.out.println("0. Volver");
-        System.out.print("Seleccione una opción: ");
-        int opcion = Integer.parseInt(scanner.nextLine());
-
-        if (recurso instanceof Prestable prestable) {
-            switch (opcion) {
-                case 1 -> prestable.prestar();
-                case 2 -> prestable.devolver();
+            if (recurso instanceof Prestable) {
+                System.out.println("1. Prestar");
+                System.out.println("2. Devolver");
             }
-        }
 
-        if (recurso instanceof Renovable renovable) {
-            if (opcion == 3) {
+            if (recurso instanceof Renovable) {
+                System.out.println("3. Renovar");
+            }
+
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+            int opcion = Integer.parseInt(scanner.nextLine());
+
+            if (recurso instanceof Prestable prestable) {
+                switch (opcion) {
+                    case 1 -> prestable.prestar();
+                    case 2 -> prestable.devolver();
+                }
+            }
+
+            if (recurso instanceof Renovable renovable && opcion == 3) {
                 renovable.renovar();
             }
-        }
 
-        System.out.println("Operación completada.");
+            System.out.println("Operación completada.");
+        } catch (RecursoNoDisponibleException e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
     }
 
 }
