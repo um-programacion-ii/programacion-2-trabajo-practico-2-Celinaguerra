@@ -7,8 +7,9 @@ import java.util.stream.Collectors;
 
 public class Consola {
     private Scanner scanner = new Scanner(System.in);
-    private GestorUsuarios gestorUsuarios; //modif
+    private GestorUsuarios gestorUsuarios;
     private GestorRecursos gestorRecursos = new GestorRecursos();
+    private GestorPrestamos gestorPrestamos = new GestorPrestamos();
 
     public Consola(ServicioNotificaciones notificador) { //
         this.gestorUsuarios = new GestorUsuarios(notificador);
@@ -73,6 +74,19 @@ public class Consola {
     private void listarUsuarios() {
         System.out.println("--- Lista de Usuarios ---");
         gestorUsuarios.listarUsuarios();
+    }
+
+    private void buscarUsuarioPorEmail() {
+        System.out.print("Ingrese el email del usuario: ");
+        String email = scanner.nextLine();
+
+        try {
+            Usuario usuario = gestorUsuarios.buscarUsuarioPorEmail(email);
+            System.out.println("--- Usuario encontrado ---");
+            System.out.println(usuario);
+        } catch (UsuarioNoEncontradoException e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
     }
 
     //PARA RECURSOS
@@ -141,18 +155,6 @@ public class Consola {
     }
 
 
-    private void buscarUsuarioPorEmail() {
-        System.out.print("Ingrese el email del usuario: ");
-        String email = scanner.nextLine();
-
-        try {
-            Usuario usuario = gestorUsuarios.buscarUsuarioPorEmail(email);
-            System.out.println("--- Usuario encontrado ---");
-            System.out.println(usuario);
-        } catch (UsuarioNoEncontradoException e) {
-            System.out.println("[ERROR] " + e.getMessage());
-        }
-    }
 
     private void buscarPorCategoria() {
         System.out.print("Ingrese la categoría (Libro, Revista, Audiolibro): ");
@@ -196,43 +198,35 @@ public class Consola {
 
 
 
-    // Submenú de recursos
+    // Submenú de prestamos
     private void operarConRecurso() {
+        System.out.print("Ingrese ID del usuario: ");
+        int idUsuario = Integer.parseInt(scanner.nextLine());
+
         System.out.print("Ingrese ID del recurso: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int idRecurso = Integer.parseInt(scanner.nextLine());
 
         try {
-            RecursoDigital recurso = gestorRecursos.obtenerRecurso(id);
-            recurso.mostrarInformacion();
+            Usuario usuario = gestorUsuarios.buscarUsuarioPorId(idUsuario);
+            RecursoDigital recurso = gestorRecursos.obtenerRecurso(idRecurso);
 
             System.out.println("\nOperaciones disponibles:");
-
-            if (recurso instanceof Prestable) {
-                System.out.println("1. Prestar");
-                System.out.println("2. Devolver");
-            }
-
-            if (recurso instanceof Renovable) {
-                System.out.println("3. Renovar");
-            }
-
+            System.out.println("1. Prestar recurso");
+            System.out.println("2. Devolver recurso");
+            System.out.println("3. Renovar recurso");
             System.out.println("0. Volver");
             System.out.print("Seleccione una opción: ");
             int opcion = Integer.parseInt(scanner.nextLine());
 
-            if (recurso instanceof Prestable prestable) {
-                switch (opcion) {
-                    case 1 -> prestable.prestar();
-                    case 2 -> prestable.devolver();
-                }
+            switch (opcion) {
+                case 1 -> gestorPrestamos.realizarPrestamo(usuario, recurso);
+                case 2 -> gestorPrestamos.devolverPrestamo(recurso);
+                case 3 -> gestorPrestamos.renovarPrestamo(recurso);
+                case 0 -> System.out.println("Volviendo al menú.");
+                default -> System.out.println("Opción no válida.");
             }
 
-            if (recurso instanceof Renovable renovable && opcion == 3) {
-                renovable.renovar();
-            }
-
-            System.out.println("Operación completada.");
-        } catch (RecursoNoDisponibleException e) {
+        } catch (RecursoNoDisponibleException | UsuarioNoEncontradoException e) {
             System.out.println("[ERROR] " + e.getMessage());
         }
     }
