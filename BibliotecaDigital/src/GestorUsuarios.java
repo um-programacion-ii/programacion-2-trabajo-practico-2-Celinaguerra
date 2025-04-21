@@ -4,11 +4,11 @@ import java.util.HashMap;
 public class GestorUsuarios {
     private Map<String, Usuario> usuariosPorEmail = new HashMap<>(); //ahora se busca por email, ya que id es int
     private Map<Integer, Usuario> usuariosPorId = new HashMap<>();
-    private ServicioNotificaciones notificador;
+    private GestorNotificaciones gestorNotificaciones;
 
-    public GestorUsuarios(ServicioNotificaciones notificador) {
-        this.notificador = notificador;
-    } //
+    public GestorUsuarios(ServicioNotificaciones servicio) {
+        this.gestorNotificaciones = new GestorNotificaciones(servicio);
+    }
 
     public Usuario buscarUsuarioPorId(int id) throws UsuarioNoEncontradoException {
         Usuario usuario = usuariosPorId.get(id);
@@ -22,7 +22,7 @@ public class GestorUsuarios {
     public void agregarUsuario(Usuario usuario) {
         usuariosPorEmail.put(usuario.getEmail(), usuario);
         usuariosPorId.put(usuario.getId(), usuario);
-        notificador.enviarNotificacion(usuario.getEmail(), "Bienvenido, " + usuario.getNombre() + "!");
+        gestorNotificaciones.enviarNotificacion(usuario.getEmail(), "Bienvenido, " + usuario.getNombre() + "!");
     }
 
     public void listarUsuarios() {
@@ -36,6 +36,10 @@ public class GestorUsuarios {
             throw new UsuarioNoEncontradoException("No se encontró un usuario con el email: " + email);
         }
         return usuario;
+    }
+
+    public void apagarNotificaciones() {
+        gestorNotificaciones.apagar();
     }
 
 

@@ -1,22 +1,20 @@
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GestorNotificaciones {
-    private final List<ServicioNotificaciones> servicios;
-    private final ExecutorService executor = Executors.newFixedThreadPool(2);
+    private ServicioNotificaciones servicio;
+    private ExecutorService executor;
 
-    public GestorNotificaciones(List<ServicioNotificaciones> servicios) {
-        this.servicios = servicios;
+    public GestorNotificaciones(ServicioNotificaciones servicio) {
+        this.servicio = servicio;
+        this.executor = Executors.newFixedThreadPool(2);
     }
 
-    public void enviar(String destino, String mensaje) {
-        for (ServicioNotificaciones servicio : servicios) {
-            executor.submit(() -> servicio.enviarNotificacion(destino, mensaje));
-        }
+    public void enviarNotificacion(String destino, String mensaje) {
+        executor.submit(() -> servicio.enviarNotificacion(destino, mensaje));
     }
 
-    public void cerrar() {
+    public void apagar() {
         executor.shutdown();
     }
 }
