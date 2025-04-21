@@ -31,7 +31,7 @@ public class Reserva implements Comparable<Reserva> {
 
     @Override
     public String toString() {
-        return "Reserva{" +
+        return "Reserva {" +
                 "Usuario = " + usuario.getNombre() + " " + usuario.getApellido() +
                 ", Recurso = " + recurso.getTitulo() +
                 ", Hora = " + fechaReserva +
