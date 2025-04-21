@@ -10,6 +10,7 @@ public class Consola {
     private GestorUsuarios gestorUsuarios;
     private GestorRecursos gestorRecursos = new GestorRecursos();
     private GestorPrestamos gestorPrestamos = new GestorPrestamos();
+    private GestorReservas gestorReservas = new GestorReservas();
 
     public Consola(ServicioNotificaciones notificador) { //
         this.gestorUsuarios = new GestorUsuarios(notificador);
@@ -29,6 +30,7 @@ public class Consola {
             System.out.println("6. Buscar recurso por título");
             System.out.println("7. Buscar recurso por categoría");
             System.out.println("8. Prestar/Devolver/Renovar recurso");
+            System.out.println("9. Gestionar Reservas");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -43,7 +45,7 @@ public class Consola {
                 case 6 -> buscarRecursoPorTitulo();
                 case 7 -> buscarPorCategoria();
                 case 8 -> operarConRecurso();
-
+                case 9 -> operarConReservas();
 
                 case 0 -> System.out.println("Saliendo");
                 default -> System.out.println("Opción inválida.");
@@ -230,5 +232,49 @@ public class Consola {
             System.out.println("[ERROR] " + e.getMessage());
         }
     }
+
+
+    //submenu de reservas
+    private void operarConReservas() {
+        int opcion = -1;
+
+        while (opcion != 0) {
+            System.out.println("\n--- MENÚ DE RESERVAS ---");
+            System.out.println("1. Agregar reserva");
+            System.out.println("2. Listar reservas pendientes");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+            opcion = Integer.parseInt(scanner.nextLine());
+
+            switch (opcion) {
+                case 1 -> agregarReserva();
+                case 2 -> gestorReservas.mostrarReservasPendientes();
+                case 0 -> System.out.println("-----------------------");
+                default -> System.out.println("Opción no válida.");
+            }
+        }
+    }
+
+    private void agregarReserva() {
+        try {
+            System.out.print("Ingrese ID del usuario: ");
+            int idUsuario = Integer.parseInt(scanner.nextLine());
+            Usuario usuario = gestorUsuarios.buscarUsuarioPorId(idUsuario);
+
+            System.out.print("Ingrese ID del recurso: ");
+            int idRecurso = Integer.parseInt(scanner.nextLine());
+            RecursoDigital recurso = gestorRecursos.obtenerRecurso(idRecurso);
+
+            Reserva reserva = new Reserva(usuario, recurso, java.time.LocalDateTime.now());
+            gestorReservas.agregarReserva(reserva);
+
+        } catch (UsuarioNoEncontradoException e) {
+            System.out.println("[ERROR] Usuario no encontrado.");
+        } catch (Exception e) {
+            System.out.println("[ERROR] No se pudo crear la reserva: " + e.getMessage());
+        }
+    }
+
+
 
 }
