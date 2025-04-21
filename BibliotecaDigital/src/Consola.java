@@ -2,8 +2,8 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Consola {
     private Scanner scanner = new Scanner(System.in);
@@ -47,7 +47,10 @@ public class Consola {
                 case 8 -> operarConRecurso();
                 case 9 -> operarConReservas();
 
-                case 0 -> System.out.println("Saliendo");
+                case 0 -> {
+                    System.out.println("Saliendo");
+                    gestorUsuarios.apagarNotificaciones();
+                }
                 default -> System.out.println("Opción inválida.");
             }
         }
