@@ -1,4 +1,4 @@
-public class Reserva {
+public class Reserva implements {
     private Usuario usuario;
     private RecursoDigital recurso;
     private long timestamp;
@@ -24,9 +24,10 @@ public class Reserva {
     @Override
     public String toString() {
         return "Reserva{" +
-                "usuario=" + usuario.getNombre() + " " + usuario.getApellido() +
-                ", recurso=" + recurso.getTitulo() +
-                ", timestamp=" + timestamp +
+                "Usuario = " + usuario.getNombre() + " " + usuario.getApellido() +
+                ", Recurso = " + recurso.getTitulo() +
+                ", Hora = " + timestamp +
                 '}';
+
     }
 }
