@@ -2,6 +2,10 @@ import java.util.*;
 
 public class GestorPrestamos {
     private List<Prestamo> prestamosActivos = new ArrayList<>();
+    private Map<RecursoDigital, Integer> contadorPrestamos = new HashMap<>();
+    private Map<Usuario, Integer> contadorPrestamosPorUsuario = new HashMap<>();
+    private Map<CategoriaRecurso, Integer> contadorPorCategoria = new HashMap<>();
+
 
     public void realizarPrestamo(Usuario usuario, RecursoDigital recurso) {
         synchronized (this) {
@@ -18,6 +22,14 @@ public class GestorPrestamos {
             Prestamo prestamo = new Prestamo(usuario, recurso);
             prestamosActivos.add(prestamo);
             recurso.actualizarEstado(EstadoRecurso.PRESTADO);
+
+            CategoriaRecurso categoria = recurso.getCategoria();
+            contadorPorCategoria.put(categoria, contadorPorCategoria.getOrDefault(categoria, 0) + 1);
+
+            //contadores para los reportes
+            contadorPrestamos.merge(recurso, 1, Integer::sum);
+            contadorPrestamosPorUsuario.merge(usuario, 1, Integer::sum);
+
 
             System.out.println(Thread.currentThread().getName() + " realizó préstamo:");
             System.out.println(prestamo);
@@ -70,4 +82,36 @@ public class GestorPrestamos {
             }
         }
     }
+
+
+    // REPORTES
+    public synchronized void mostrarRecursosMasPrestados() {
+        System.out.println("--- Recursos más prestados ---");
+        contadorPrestamos.entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                .forEach(entry ->
+                        System.out.println(entry.getKey().getTitulo() + " - " + entry.getValue() + " préstamos")
+                );
+    }
+
+    public synchronized void mostrarUsuariosMasActivos() {
+        System.out.println("--- Usuarios más activos ---");
+
+        contadorPrestamosPorUsuario.entrySet().stream()
+                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                .forEach(entry ->
+                        System.out.println(entry.getKey().getNombre() + " " + entry.getKey().getApellido() +
+                                " - Préstamos: " + entry.getValue())
+                );
+    }
+
+    public synchronized void mostrarEstadisticasPorCategoria() {
+        System.out.println("--- Estadísticas de uso por categoría ---");
+        contadorPorCategoria.entrySet().stream()
+                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " préstamos"));
+    }
+
+
 }
