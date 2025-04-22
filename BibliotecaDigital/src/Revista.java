@@ -19,12 +19,12 @@ public class Revista implements RecursoDigital, Prestable {
     }
 
     @Override
-    public EstadoRecurso getEstado() {
+    public synchronized EstadoRecurso getEstado() {
         return estado;
     }
 
     @Override
-    public void actualizarEstado(EstadoRecurso estado) {
+    public synchronized void actualizarEstado(EstadoRecurso estado) {
         this.estado = estado;
     }
 
