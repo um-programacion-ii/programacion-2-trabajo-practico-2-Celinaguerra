@@ -7,8 +7,9 @@ public class AlertaVencimiento {
     private GestorPrestamos gestorPrestamos;
     private Scanner scanner = new Scanner(System.in);
 
-    public AlertaVencimiento(GestorPrestamos gestorPrestamos) {
+    public AlertaVencimiento(GestorPrestamos gestorPrestamos, Scanner scanner) {
         this.gestorPrestamos = gestorPrestamos;
+        this.scanner = scanner;
     }
 
     public void verificarAlertas() {
@@ -31,7 +32,7 @@ public class AlertaVencimiento {
     private void mostrarAlerta(Prestamo prestamo, String mensaje) {
         System.out.println("\n============================");
         System.out.println(mensaje);
-        System.out.println("Usuario: " + prestamo.getUsuario().getNombreCompleto());
+        System.out.println("Usuario: " + prestamo.getUsuario().getNombre());
         System.out.println("Recurso: " + prestamo.getRecurso().getTitulo());
         System.out.println("Fecha de devolución: " + prestamo.getFechaDevolucion());
         System.out.println("============================\n");

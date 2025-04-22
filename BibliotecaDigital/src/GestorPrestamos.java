@@ -83,6 +83,29 @@ public class GestorPrestamos {
         }
     }
 
+    public List<Prestamo> obtenerTodosLosPrestamos() {
+        return new ArrayList<>(prestamosActivos);
+    }
+
+    public boolean renovarPrestamo(Prestamo prestamo) {
+        synchronized (this) {
+            RecursoDigital recurso = prestamo.getRecurso();
+
+            if (!(recurso instanceof Renovable renovable)) {
+                System.out.println("Este recurso no permite renovación.");
+                return false;
+            }
+
+            if (!prestamosActivos.contains(prestamo)) {
+                System.out.println("Este préstamo no está activo.");
+                return false;
+            }
+
+            renovable.renovar();
+            System.out.println(Thread.currentThread().getName() + " renovó el recurso.");
+            return true;
+        }
+    }
 
     // REPORTES
     public synchronized void mostrarRecursosMasPrestados() {
