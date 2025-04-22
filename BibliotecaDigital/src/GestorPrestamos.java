@@ -19,7 +19,7 @@ public class GestorPrestamos {
             prestamosActivos.add(prestamo);
             recurso.actualizarEstado(EstadoRecurso.PRESTADO);
 
-            System.out.println(Thread.currentThread().getName() + "realizó préstamo:");
+            System.out.println(Thread.currentThread().getName() + " realizó préstamo:");
             System.out.println(prestamo);
         }
     }
