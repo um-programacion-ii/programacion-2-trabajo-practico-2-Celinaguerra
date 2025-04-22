@@ -2,6 +2,7 @@ import java.util.*;
 
 public class GestorPrestamos {
     private List<Prestamo> prestamosActivos = new ArrayList<>();
+    private Map<RecursoDigital, Integer> contadorPrestamos = new HashMap<>();
 
     public void realizarPrestamo(Usuario usuario, RecursoDigital recurso) {
         synchronized (this) {
@@ -69,5 +70,15 @@ public class GestorPrestamos {
                 prestamosActivos.forEach(System.out::println);
             }
         }
+    }
+
+    public synchronized void mostrarRecursosMasPrestados() {
+        System.out.println("--- Recursos más prestados ---");
+        contadorPrestamos.entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                .forEach(entry ->
+                        System.out.println(entry.getKey().getTitulo() + " - " + entry.getValue() + " préstamos")
+                );
     }
 }
