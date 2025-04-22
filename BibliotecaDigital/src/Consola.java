@@ -31,6 +31,7 @@ public class Consola {
             System.out.println("7. Buscar recurso por categoría");
             System.out.println("8. Prestar/Devolver/Renovar recurso");
             System.out.println("9. Gestionar Reservas");
+            System.out.println("10. Reportes/Estadísticas");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -46,6 +47,7 @@ public class Consola {
                 case 7 -> buscarPorCategoria();
                 case 8 -> operarConRecurso();
                 case 9 -> operarConReservas();
+                case 10 -> mostrarEstadisticas();
 
                 case 0 -> {
                     System.out.println("Saliendo");
@@ -278,6 +280,26 @@ public class Consola {
         }
     }
 
+    //submenú estadísticas y reportes
+    private void mostrarEstadisticas() {
+        int opcion = -1;
 
+        while (opcion != 0) {
+            System.out.println("\n--- MENÚ DE REPORTES / ESTADÍSTICAS ---");
+            System.out.println("1. Mostrar recursos más prestados");
+            System.out.println("2. Mostrar usuarios más activos");
+            System.out.println("3. Mostrar estadísticas por categoría");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+            opcion = Integer.parseInt(scanner.nextLine());
 
+            switch (opcion) {
+                case 1 -> gestorPrestamos.mostrarRecursosMasPrestados();
+                case 2 -> gestorPrestamos.mostrarUsuariosMasActivos();
+                case 3 -> gestorPrestamos.mostrarEstadisticasPorCategoria();
+                case 0 -> System.out.println("Volviendo al menú principal.");
+                default -> System.out.println("Opción no válida.");
+            }
+        }
+    }
 }
