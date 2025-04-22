@@ -19,13 +19,14 @@ public class Revista implements RecursoDigital, Prestable {
     }
 
     @Override
-    public EstadoRecurso getEstado() {
+    public synchronized EstadoRecurso getEstado() {
         return estado;
     }
 
     @Override
-    public void actualizarEstado(EstadoRecurso estado) {
-        this.estado = estado;
+    public synchronized void actualizarEstado(EstadoRecurso nuevoEstado) {
+        System.out.println("[Hilo: " + Thread.currentThread().getName() + "] Cambiando estado de " + titulo + " de " + estado + " a " + nuevoEstado);
+        this.estado = nuevoEstado;
     }
 
     public String getTitulo() {
