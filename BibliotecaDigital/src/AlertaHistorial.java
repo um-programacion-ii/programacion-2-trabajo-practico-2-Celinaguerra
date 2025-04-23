@@ -1,5 +1,8 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class AlertaHistorial {
-    private static final List<String> historial = new ArrayList<>();
+    private static List<String> historial = new ArrayList<>();
 
     public static void registrar(String nivel, String mensaje) {
         String alerta = "[" + nivel + "] " + mensaje;
