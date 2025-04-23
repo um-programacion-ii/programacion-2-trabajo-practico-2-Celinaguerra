@@ -218,6 +218,8 @@ public class Consola {
         int idRecurso = Integer.parseInt(scanner.nextLine());
 
         try {
+            gestorRecursos.mostrarRecursosDisponibles();
+
             Usuario usuario = gestorUsuarios.buscarUsuarioPorId(idUsuario);
             RecursoDigital recurso = gestorRecursos.obtenerRecurso(idRecurso);
 

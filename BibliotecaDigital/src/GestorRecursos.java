@@ -48,6 +48,22 @@ public class GestorRecursos {
                 .collect(Collectors.toList());
     }
 
+    public void mostrarRecursosDisponibles() {
+        List<RecursoDigital> disponibles = recursos.stream()
+                .filter(r -> r.getEstado() == EstadoRecurso.DISPONIBLE)
+                .collect(Collectors.toList());
+
+        if (disponibles.isEmpty()) {
+            System.out.println("No hay recursos disponibles.");
+        } else {
+            System.out.println("--- Recursos disponibles ---");
+            for (RecursoDigital recurso : disponibles) {
+                recurso.mostrarInformacion();
+            }
+        }
+    }
+
+
     //FILTRADO
 
     public List<RecursoDigital> filtrarPorCategoria(String categoria) {

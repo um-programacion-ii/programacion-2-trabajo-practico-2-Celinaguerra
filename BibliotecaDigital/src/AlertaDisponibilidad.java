@@ -12,7 +12,8 @@ public class AlertaDisponibilidad {
         if (siguiente != null && siguiente.getRecurso().equals(recurso)) {
             Usuario usuario = siguiente.getUsuario();
             String mensaje = "El recurso \"" + recurso.getTitulo() + "\" que reservaste está disponible.";
-            servicioNotificaciones.enviarNotificacion(usuario, mensaje);
+            String usuarionom = usuario.getNombre();
+            servicioNotificaciones.enviarNotificacion(usuarionom, mensaje);
         }
     }
 }
