@@ -12,10 +12,13 @@ public class Consola {
     private GestorPrestamos gestorPrestamos = new GestorPrestamos();
     private GestorReservas gestorReservas = new GestorReservas();
     private AlertaVencimiento alertaVencimiento;
+    private AlertaDisponibilidad alertaDisponibilidad;
+
 
     public Consola(ServicioNotificaciones notificador) { //
         this.gestorUsuarios = new GestorUsuarios(notificador);
         this.alertaVencimiento = new AlertaVencimiento(gestorPrestamos, scanner);
+        this.alertaDisponibilidad = new AlertaDisponibilidad(gestorReservas, notificador);
     }
 
     // MENU
@@ -206,11 +209,24 @@ public class Consola {
         };
     }
 
+    //para prestamos
+    private void ofrecerPrestamoInmediato(Usuario usuario, RecursoDigital recurso) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("¿Deseás realizar el préstamo de \"" + recurso.getTitulo() + "\" ahora? (si/no)");
+        String respuesta = scanner.nextLine().trim().toLowerCase();
 
+        if (respuesta.equals("si")) {
+            gestorPrestamos.realizarPrestamo(usuario, recurso);
+        } else {
+            System.out.println("El préstamo no fue realizado.");
+        }
+    }
 
 
     // Submenú de prestamos
     private void operarConRecurso() {
+        gestorRecursos.mostrarRecursosDisponibles();
+
         System.out.print("Ingrese ID del usuario: ");
         int idUsuario = Integer.parseInt(scanner.nextLine());
 
@@ -218,8 +234,6 @@ public class Consola {
         int idRecurso = Integer.parseInt(scanner.nextLine());
 
         try {
-            gestorRecursos.mostrarRecursosDisponibles();
-
             Usuario usuario = gestorUsuarios.buscarUsuarioPorId(idUsuario);
             RecursoDigital recurso = gestorRecursos.obtenerRecurso(idRecurso);
 
@@ -233,7 +247,14 @@ public class Consola {
 
             switch (opcion) {
                 case 1 -> gestorPrestamos.realizarPrestamo(usuario, recurso);
-                case 2 -> gestorPrestamos.devolverPrestamo(recurso);
+                case 2 -> {
+                    gestorPrestamos.devolverPrestamo(recurso);
+
+                    alertaDisponibilidad.notificarSiHayReserva(recurso);
+
+                    gestorReservas.mostrarReservasPendientes();
+                    ofrecerPrestamoInmediato(usuario, recurso);
+                }
                 case 3 -> gestorPrestamos.renovarPrestamo(recurso);
                 case 0 -> System.out.println("Volviendo al menú.");
                 default -> System.out.println("Opción no válida.");
