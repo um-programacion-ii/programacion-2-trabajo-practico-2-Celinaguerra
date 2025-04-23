@@ -13,6 +13,8 @@ public class Consola {
     private GestorReservas gestorReservas = new GestorReservas();
     private AlertaVencimiento alertaVencimiento;
     private AlertaDisponibilidad alertaDisponibilidad;
+    private ExecutorService executor = Executors.newCachedThreadPool();
+
 
 
     public Consola(ServicioNotificaciones notificador) { //
@@ -253,7 +255,12 @@ public class Consola {
                     alertaDisponibilidad.notificarSiHayReserva(recurso);
 
                     gestorReservas.mostrarReservasPendientes();
-                    ofrecerPrestamoInmediato(usuario, recurso);
+
+                    Reserva siguienteReserva = gestorReservas.obtenerSiguienteReserva(recurso);
+                    if (siguienteReserva != null && siguienteReserva.getRecurso().equals(recurso)) {
+                        Usuario usuarioReservante = siguienteReserva.getUsuario();
+                        ofrecerPrestamoInmediato(usuarioReservante, recurso);
+                    }
                 }
                 case 3 -> gestorPrestamos.renovarPrestamo(recurso);
                 case 0 -> System.out.println("Volviendo al menú.");

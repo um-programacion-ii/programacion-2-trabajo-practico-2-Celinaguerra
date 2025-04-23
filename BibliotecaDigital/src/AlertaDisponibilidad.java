@@ -8,7 +8,7 @@ public class AlertaDisponibilidad {
     }
 
     public void notificarSiHayReserva(RecursoDigital recurso) {
-        Reserva siguiente = gestorReservas.obtenerSiguienteReserva();
+        Reserva siguiente = gestorReservas.obtenerSiguienteReserva(recurso);
         if (siguiente != null && siguiente.getRecurso().equals(recurso)) {
             Usuario usuario = siguiente.getUsuario();
             String mensaje = "El recurso \"" + recurso.getTitulo() + "\" que reservaste está disponible.";
