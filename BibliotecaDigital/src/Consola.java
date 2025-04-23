@@ -13,6 +13,8 @@ public class Consola {
     private GestorReservas gestorReservas = new GestorReservas();
     private AlertaVencimiento alertaVencimiento;
     private AlertaDisponibilidad alertaDisponibilidad;
+    private ExecutorService executor = Executors.newCachedThreadPool();
+
 
 
     public Consola(ServicioNotificaciones notificador) { //
@@ -37,6 +39,8 @@ public class Consola {
             System.out.println("8. Prestar/Devolver/Renovar recurso");
             System.out.println("9. Gestionar Reservas");
             System.out.println("10. Reportes/Estadísticas");
+            System.out.println("11. Ver historial de alertas");
+            System.out.println("12. Configurar Notificaciones");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -55,6 +59,19 @@ public class Consola {
                 case 8 -> operarConRecurso();
                 case 9 -> operarConReservas();
                 case 10 -> mostrarEstadisticas();
+                case 11 -> AlertaHistorial.mostrarHistorial();
+                case 12 -> {
+                    System.out.print("Ingrese el email del usuario para configurar las preferencias de notificación: ");
+                    String emailUsuario = scanner.nextLine();
+
+                    try {
+                        Usuario usuario = gestorUsuarios.buscarUsuarioPorEmail(emailUsuario);
+                        configurarPreferenciasNotificacion(usuario);
+                    } catch (UsuarioNoEncontradoException e) {
+                        System.out.println("Usuario no encontrado.");
+                    }
+                }
+
 
                 case 0 -> {
                     System.out.println("Saliendo");
@@ -222,6 +239,31 @@ public class Consola {
         }
     }
 
+    //submenu configuracion
+    private void configurarPreferenciasNotificacion(Usuario usuario) {
+        System.out.println("--- Configurar Preferencias de Notificación ---");
+        System.out.println("Seleccione el nivel mínimo de alertas que desea recibir:");
+        System.out.println("1. INFO");
+        System.out.println("2. WARNING");
+        System.out.println("3. ERROR");
+        System.out.print("Opción: ");
+
+        int opcion = scanner.nextInt();
+        scanner.nextLine();
+
+        NivelAlerta nivel = switch (opcion) {
+            case 1 -> NivelAlerta.INFO;
+            case 2 -> NivelAlerta.WARNING;
+            case 3 -> NivelAlerta.ERROR;
+            default -> {
+                System.out.println("Opción no válida. Se usará INFO por defecto.");
+                yield NivelAlerta.INFO;
+            }
+        };
+
+        PreferenciasNotificaciones.establecerPreferencia(usuario.getNombre(), nivel);
+        System.out.println("Preferencia actualizada: " + nivel);
+    }
 
     // Submenú de prestamos
     private void operarConRecurso() {
@@ -253,7 +295,12 @@ public class Consola {
                     alertaDisponibilidad.notificarSiHayReserva(recurso);
 
                     gestorReservas.mostrarReservasPendientes();
-                    ofrecerPrestamoInmediato(usuario, recurso);
+
+                    Reserva siguienteReserva = gestorReservas.obtenerSiguienteReserva(recurso);
+                    if (siguienteReserva != null && siguienteReserva.getRecurso().equals(recurso)) {
+                        Usuario usuarioReservante = siguienteReserva.getUsuario();
+                        ofrecerPrestamoInmediato(usuarioReservante, recurso);
+                    }
                 }
                 case 3 -> gestorPrestamos.renovarPrestamo(recurso);
                 case 0 -> System.out.println("Volviendo al menú.");

@@ -8,8 +8,14 @@ public class GestorReservas {
         System.out.println("Reserva agregada: " + reserva);
     }
 
-    public Reserva obtenerSiguienteReserva() {
-        return colaReservas.poll();
+    public Reserva obtenerSiguienteReserva(RecursoDigital recurso) {
+        for (Reserva reserva : colaReservas) {
+            if (reserva.getRecurso().equals(recurso)) {
+                colaReservas.remove(reserva);
+                return reserva;
+            }
+        }
+        return null;
     }
 
     public void mostrarReservasPendientes() {
