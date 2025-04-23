@@ -11,9 +11,11 @@ public class Consola {
     private GestorRecursos gestorRecursos = new GestorRecursos();
     private GestorPrestamos gestorPrestamos = new GestorPrestamos();
     private GestorReservas gestorReservas = new GestorReservas();
+    private AlertaVencimiento alertaVencimiento;
 
     public Consola(ServicioNotificaciones notificador) { //
         this.gestorUsuarios = new GestorUsuarios(notificador);
+        this.alertaVencimiento = new AlertaVencimiento(gestorPrestamos, scanner);
     }
 
     // MENU
@@ -34,6 +36,8 @@ public class Consola {
             System.out.println("10. Reportes/Estadísticas");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
+
+            alertaVencimiento.verificarAlertas();
 
             opcion = Integer.parseInt(scanner.nextLine());
 
