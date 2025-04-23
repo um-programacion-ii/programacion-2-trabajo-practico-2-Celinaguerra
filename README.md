@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/tc38IXJF)
 # 📚 Trabajo Práctico: Sistema de Gestión de Biblioteca Digital (Java 21+)
 
 ## 📌 Objetivo General
@@ -5,7 +6,115 @@
 Desarrollar un sistema de gestión de biblioteca digital que implemente los cinco principios SOLID, programación orientada a objetos, y conceptos avanzados de Java. El sistema deberá manejar diferentes tipos de recursos digitales, préstamos, reservas, y notificaciones en tiempo real.
 
 ## 👨‍🎓 Información del Alumno
-- **Nombre y Apellido**: [Nombre y Apellido del Alumno]
+- **Nombre y Apellido**: Celina Guerra Díaz
+
+## Documentación del Sistema
+### 1. Como funciona el sistema
+- Descripcion general de la arquitectura
+El sistema de Biblioteca Digital sigue los principios SOLID y utiliza una arquitectura orientada a objetos.
+La arquitectura puede entenderse en tres capas principales:
+  - Capa de Modelo (modelo/): define las entidades y estructuras de datos como libros, revistas, préstamos, reservas y usuarios.
+  - Capa de Gestión (gestores/): implementa la lógica de negocio relacionada con cada entidad, actuando como controladores del sistema.
+  - Capa de Presentación / Interacción (Consola, alertas/): gestiona la interacción con el usuario, notificaciones, alertas y menús de operaciones.
+
+- Explicacion de los componentes principales
+1. Modelo de Recursos
+   RecursoDigital (interfaz): Define el comportamiento base de cualquier recurso digital.
+   Libro, Revista: Implementan RecursoDigital, y posiblemente Prestable y Renovable para controlar préstamos y renovaciones.
+
+2. Interfaces de Comportamiento
+   Prestable: Define métodos para prestar y devolver.
+   Renovable: Define métodos para renovar recursos.
+
+3. Gestores
+   GestorRecursos: Maneja la colección de recursos, permite obtener recursos y verificar su disponibilidad.
+   GestorUsuarios: Administra usuarios y permite búsquedas por ID o email.
+   GestorPrestamos: Controla el flujo de préstamos, devoluciones y renovaciones.
+   GestorReservas: Usa una PriorityBlockingQueue para gestionar reservas con prioridad.
+
+4. Sistema de Alertas (alertas/)
+   AlertaDisponibilidad: Notifica cuando un recurso reservado queda disponible.
+   AlertaVencimiento: Supervisa fechas de devolución y lanza recordatorios o permite renovación.
+   Recordatorio: Envía notificaciones periódicas sobre préstamos activos.
+
+5. Excepciones Personalizadas
+   RecursoNoDisponibleException, UsuarioNoEncontradoException: Definen errores específicos de dominio.
+
+6. Notificaciones y Concurrencia
+   ServicioNotificaciones: Envía notificaciones usando ExecutorService para ejecutar tareas en paralelo.
+   Alertas y recordatorios funcionan de forma asíncrona o periódica.
+
+7. Interfaz de Usuario
+   Consola: Es el punto de entrada para el usuario. Muestra menús, recoge entrada del usuario y delega operaciones a los gestores.
+
+- Flujo de trabajo del sistema
+1. Inicio:
+    La aplicacion se inicia desde la clase Main, que lanza la consola.
+    Se inicializan los componentes principales
+2. Gestion de Usuarios:
+    Los usuarios se pueden registrar en el sistema
+    Se pueden buscar y listar por orden
+3. Gestion de Recursos:
+    Se crean recursos pertenecientes a las categorías libro, revista, audiolibro
+    Se pueden listar y buscar
+4. Proceso de préstamos:
+    Se puede pedir, devolver o renovar un recurso
+    El sistema verifica la disponibilidad
+5. Proceso de reserva:
+    El usuario puede solicitar la reserva de un recurso
+    Se enviará una notificacion cuando el recurso está disponible
+6. Alertas:
+    El sistema cuenta con alertas de error y vencimiento de plazos
+7. Generacion de reportes:
+    Se pueden ver reportes estadísticos de préstamos y usuarios
+
+### 2.Cómo ponerlo en funcionamiento
+## Requisitos previos:
+    JDK 21+
+    Git
+## Proceso de compilación y ejecución:
+    1. Clonar el repositorio: git clone git@github.com:um-programacion-ii/programacion-2-trabajo-practico-2-Celinaguerra.git
+    2. Entrar en la carpeta: cd BibliotecaDigital/src/
+    3. Compilar el proyecto: javac **/*.java
+    4. Ejecutar: java Main.java
+    5. Se mostrará el menú inicial, siga las instrucciones.
+
+### 3. Cómo probar cada aspecto desarrollado
+Gestion de Usuarios:
+ - Elegir opción 'Agregar usuario', ingresar datos necesarios
+ - AL finalizar, recibirá una notificacion de bienvenida.
+ - Tiene la opción de ejecutar una búsqueda o un listado
+
+Gestion de Recursos:
+ - Elegir opción 'Agregar Recurso', ingresar datos necesarios
+ - AL finalizar puede listarlos o buscar por título o categoría
+ - Pueden ser ordenados
+
+Gestión de Préstamos:
+ - Puede elegir la opción Prestar/Devolver/Renovar recurso para acceder
+ - Se le va a preguntar qué desea hacer
+ - Si desea prestar, el sistema verificará que el recurso está disponible
+ - Si el recurso es prestado, se le notificará el cambio de estado del recurso
+ - Si es devuelto se le notificará
+ - Si es renovado se le añadirán 14 días más a su prestamo
+ - EL sistema verifica de antemano si los recursos seleccionados se pueden prestar o renovar
+
+Gestión de Reservas:
+ - Puede seleccionar un recurso que reservar
+ - Si el recurso es devuelto, se le notificará de su devolución
+ - Se le preguntará si desea realizar un prestamo inmediato
+
+Gestion de Reportes:
+ - Seleccione la opción 'Reportes/Estadísticas'
+ - Se le dará la opcion de ver una lista de Usuarios más activos o recursos más solicitados
+
+Alertas:
+ - Seleccionando esta opción verá un historial de las alertas informando de los prestamos a su nombre.
+
+Configurar Notificaciones:
+ - EL usuario puede elegir qué tipo de notificacion prefiere recibir
+
+
 
 ## 📋 Requisitos Adicionales
 
