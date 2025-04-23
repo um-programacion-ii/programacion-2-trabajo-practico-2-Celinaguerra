@@ -4,6 +4,9 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
+
 
 public class Consola {
     private Scanner scanner = new Scanner(System.in);
@@ -38,9 +41,10 @@ public class Consola {
             System.out.println("7. Buscar recurso por categoría");
             System.out.println("8. Prestar/Devolver/Renovar recurso");
             System.out.println("9. Gestionar Reservas");
-            System.out.println("10. Reportes/Estadísticas");
-            System.out.println("11. Ver historial de alertas");
-            System.out.println("12. Configurar Notificaciones");
+            System.out.println("10. Generar reporte de préstamos");
+            System.out.println("11. Reportes/Estadísticas");
+            System.out.println("12. Ver historial de alertas");
+            System.out.println("13. Configurar Notificaciones");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -58,9 +62,20 @@ public class Consola {
                 case 7 -> buscarPorCategoria();
                 case 8 -> operarConRecurso();
                 case 9 -> operarConReservas();
-                case 10 -> mostrarEstadisticas();
-                case 11 -> AlertaHistorial.mostrarHistorial();
-                case 12 -> {
+                case 10 -> {
+                    System.out.println("[INFO] Generando reporte de préstamos en segundo plano...");
+                    Future<?> futuro = executor.submit(new GeneradorReportes(gestorPrestamos));
+
+                    try {
+                        futuro.get(); // Espera a que termine la tarea antes de volver al menú
+                    } catch (InterruptedException | ExecutionException e) {
+                        System.out.println("[ERROR] No se pudo generar el reporte: " + e.getMessage());
+                    }
+                }
+
+                case 11 -> mostrarEstadisticas();
+                case 12 -> AlertaHistorial.mostrarHistorial();
+                case 13 -> {
                     System.out.print("Ingrese el email del usuario para configurar las preferencias de notificación: ");
                     String emailUsuario = scanner.nextLine();
 
